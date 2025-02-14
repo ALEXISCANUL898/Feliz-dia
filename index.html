@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feliz Dia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Delicious+Handrawn&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #8b4513, #a0522d); /* Fondo marrón vaquero */
+      font-family: 'Delicious Handrawn', cursive;
+      overflow: hidden;
+      position: relative;
+    }
+    .container {
+      position: relative;
+      text-align: center;
+      z-index: 2;
+    }
+    .envelope {
+      width: 300px;
+      height: 180px;
+      background-color: #f4a460; /* Color marrón claro */
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.5s ease;
+      border-radius: 10px;
+      border: 5px solid #8b4513; /* Borde marrón oscuro */
+      overflow: visible; /* Permite que la hoja se expanda fuera del sobre */
+    }
+    /* Texto en el sobre */
+    .envelope-front-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      color: #8b4513;
+      z-index: 2;
+      transition: opacity 0.5s ease;
+    }
+    .envelope.open .envelope-front-text {
+      opacity: 0;
+    }
+    .flap {
+      width: 0;
+      height: 0;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-bottom: 90px solid #d2691e; /* Color marrón */
+      position: absolute;
+      top: -90px;
+      left: 0;
+      transform-origin: top;
+      transition: transform 0.5s ease;
+      z-index: 3;
+    }
+    .letter {
+      width: 260px;
+      height: 300px; /* Altura fija para activar el scroll */
+      background-color: #fff;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+      font-size: 24px;
+      color: #8b4513; /* Color marrón oscuro */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      border: 2px solid #8b4513;
+      transform: translateY(-50px);
+      opacity: 0;
+      overflow-y: auto; /* Permite el scroll vertical */
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      z-index: 1;
+    }
+    .envelope.open .flap {
+      transform: rotateX(180deg);
+    }
+    .envelope.open .letter {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .cowboy-hats {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .cowboy-hat {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-image: url('cowboy-hat.png'); /* Imagen de sombrero vaquero */
+      background-size: cover;
+      animation: float 6s infinite ease-in-out;
+    }
+    .cowboy-hat:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+    .cowboy-hat:nth-child(2) { top: 30%; left: 70%; animation-delay: 1s; }
+    .cowboy-hat:nth-child(3) { top: 50%; left: 40%; animation-delay: 2s; }
+    .cowboy-hat:nth-child(4) { top: 70%; left: 10%; animation-delay: 3s; }
+    .cowboy-hat:nth-child(5) { top: 80%; left: 60%; animation-delay: 4s; }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(20deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+    .sparkles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .sparkle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #ffcccb; /* Color rosa claro */
+      border-radius: 50%;
+      animation: sparkle 2s infinite ease-in-out;
+    }
+    .sparkle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 40%; left: 80%; animation-delay: 1s; }
+    .sparkle:nth-child(3) { top: 60%; left: 30%; animation-delay: 2s; }
+    .sparkle:nth-child(4) { top: 80%; left: 50%; animation-delay: 3s; }
+    .sparkle:nth-child(5) { top: 90%; left: 70%; animation-delay: 4s; }
+    @keyframes sparkle {
+      0% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0); }
+    }
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(139, 69, 19, 0.8);
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+      z-index: 3;
+    }
+    .button-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 4;
+    }
+    .next-button {
+      padding: 10px 20px;
+      background-color: #8b4513;
+      color: #fff;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .next-button:hover {
+      background-color: #a0522d;
+    }
+  </style>
+</head>
+<body>
+  <div class="cowboy-hats">
+    <div class="cowboy-hat"></div>
+    <div class="cowboy-hat"></div>
+    <div class="cowboy-hat"></div>
+    <div class="cowboy-hat"></div>
+    <div class="cowboy-hat"></div>
+  </div>
+  <div class="sparkles">
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+  </div>
+  <div class="container">
+    <div class="envelope" onclick="openEnvelope()">
+      <div class="envelope-front-text">
+        <p>A veces, los regalos no necesitan ser caros para ser especiales; lo que los hacen especiales es el significado que tú les das. Feliz Dia Chaparra</p>
+      </div>
+      <div class="flap"></div>
+      <div class="letter">
+        <p>
+          En este día quiero decirte cuánto agradezco haberte conocido y, de igual manera, que sepas que siempre vas a tener mi apoyo para lo que necesites. Sé que a veces puedo ser mamón o cualquier cosa que se te pase por la mente, pero siempre estaré para ayudar en lo que pueda.<br><br>
+          Sé que no necesitas que te lo diga, pero me da mucho gusto que te estés superando. Sé que no es fácil, solo tú sabes lo que realmente cuesta, pero eso es de admirar. Ya casi terminas de estudiar una carrera, y eso es algo muy chido. Nunca cambies tu forma de ser.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="button-container">
+    <button class="next-button" onclick="window.location.href='FLORES.html';">Tus flores</button>
+  </div>
+  <footer>
+    <p>si cuidas el link puedes entrar hasta que cumplas 61 años, para que me recuerdes por si te dejo de hablar ajjaja</p>
+  </footer>
+  <script>
+    function openEnvelope() {
+      document.querySelector('.envelope').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
+
